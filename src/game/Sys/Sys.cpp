@@ -907,39 +907,39 @@ int Sys_GetSemaphoreFileName()
 }
 
 //DONE : 0x64D100
-int Sys_IsGameProcess(int id) // This needs a clean up
+int Sys_IsGameProcess(int id)
 {
 	int isGame;
 	HANDLE process;
 	HANDLE snapshot;
-	CHAR v6;
-	CHAR* v7;
-	CHAR* i;
-	CHAR Filename[260];
+	char* i;
+	char* moduleName;
+	char modulePath[260];
 	MODULEENTRY32 me;
 
 	isGame = 0;
 	process = OpenProcess(0x1F0FFFu, 0, id);
+
 	if (!process)
 		return 0;
 	CloseHandle(process);
+
 	snapshot = CreateToolhelp32Snapshot(8u, id);
-	if (snapshot == (HANDLE)-1)
+
+	if (snapshot == (void*)-1)
 		return 0;
 	me.dwSize = 548;
 	if (Module32First(snapshot, &me))
 	{
-		GetModuleFileNameA(0, Filename, 0x104u);
-		v6 = Filename[0];
-		v7 = Filename;
-		Filename[259] = 0;
-		for (i = Filename; v6; ++i)
+		GetModuleFileNameA(0, modulePath, 0x104u);
+		modulePath[259] = 0;
+		moduleName = modulePath;
+		for (i = modulePath; *i; ++i)
 		{
-			if (v6 == 92 || v6 == 58)
-				v7 = i + 1;
-			v6 = i[1];
+			if (*i == 92 || *i == 58)
+				moduleName = i + 1;
 		}
-		while (I_stricmp(me.szModule, v7))
+		while (I_stricmp(me.szModule, moduleName))
 		{
 			if (!Module32Next(snapshot, &me))
 			{
@@ -963,7 +963,6 @@ int Sys_CheckCrashOrRerun()
 	DWORD NumberOfBytesRead;
 	DWORD CurrentProcessId;
 	int Answer;
-	int Buffer;
 	unsigned int id;
 
 	if (!sys_processSemaphoreFile[0])
@@ -972,10 +971,10 @@ int Sys_CheckCrashOrRerun()
 	File = CreateFileA(sys_processSemaphoreFile, 0x80000000, 0, 0, 3u, 2u, 0);
 	if (File != (HANDLE)-1)
 	{
-		if (ReadFile(File, &Buffer, 4u, &NumberOfBytesRead, 0) && NumberOfBytesRead == 4)
+		if (ReadFile(File, &id, 4u, &NumberOfBytesRead, 0) && NumberOfBytesRead == 4)
 		{
 			CloseHandle(File);
-			if (CurrentProcessId != Buffer && Sys_IsGameProcess(id))
+			if (CurrentProcessId != id && Sys_IsGameProcess(id))
 				return 0;
 			Title = Win_LocalizeRef("WIN_IMPROPER_QUIT_TITLE");
 			Body = Win_LocalizeRef("WIN_IMPROPER_QUIT_BODY");
@@ -996,17 +995,17 @@ int Sys_CheckCrashOrRerun()
 		}
 		File = CreateFileA(sys_processSemaphoreFile, 0x40000000u, 0, 0, 2u, 2u, 0);
 		if (File == (void*)-1)
-			goto LABEL_18; // Should we be doing this?
-		if (!WriteFile(File, &CurrentProcessId, 4u, &NumberOfBytesRead, 0) || NumberOfBytesRead != 4)
 		{
-			CloseHandle(File);
-LABEL_18:
 			Sys_EnterCriticalSection(CRITSECT_FATAL_ERROR);
 			Title = Win_LocalizeRef("WIN_DISK_FULL_TITLE");
 			Body = Win_LocalizeRef("WIN_DISK_FULL_BODY");
 			ActiveWindow = GetActiveWindow();
 			MessageBoxA(ActiveWindow, Body, Title, 0x10u);
 			memory::call<void()>(0x48A4E0)(); // Steam_EmergencyShutdown
+		}
+		if (!WriteFile(File, &CurrentProcessId, 4u, &NumberOfBytesRead, 0) || NumberOfBytesRead != 4)
+		{
+			CloseHandle(File);
 		}
 	}
 	CloseHandle(File);
