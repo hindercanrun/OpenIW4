@@ -906,10 +906,51 @@ int Sys_GetSemaphoreFileName()
 	return sprintf(sys_processSemaphoreFile, "__%s", moduleName);
 }
 
-//TODO : 0x64D100
-int Sys_IsGameProcess(int id)
+//DONE : 0x64D100
+int Sys_IsGameProcess(int id) // This needs a clean up
 {
-	return NULL;
+	int isGame;
+	HANDLE process;
+	HANDLE snapshot;
+	CHAR v6;
+	CHAR* v7;
+	CHAR* i;
+	CHAR Filename[260];
+	MODULEENTRY32 me;
+
+	isGame = 0;
+	process = OpenProcess(0x1F0FFFu, 0, id);
+	if (!process)
+		return 0;
+	CloseHandle(process);
+	snapshot = CreateToolhelp32Snapshot(8u, id);
+	if (snapshot == (HANDLE)-1)
+		return 0;
+	me.dwSize = 548;
+	if (Module32First(snapshot, &me))
+	{
+		GetModuleFileNameA(0, Filename, 0x104u);
+		v6 = Filename[0];
+		v7 = Filename;
+		Filename[259] = 0;
+		for (i = Filename; v6; ++i)
+		{
+			if (v6 == 92 || v6 == 58)
+				v7 = i + 1;
+			v6 = i[1];
+		}
+		while (I_stricmp(me.szModule, v7))
+		{
+			if (!Module32Next(snapshot, &me))
+			{
+				CloseHandle(snapshot);
+				return 0;
+			}
+		}
+		isGame = 1;
+	}
+	CloseHandle(snapshot);
+	return isGame;
 }
 
 //DONE : 0x411350
@@ -919,8 +960,6 @@ int Sys_CheckCrashOrRerun()
 	HWND ActiveWindow;
 	const char* Body;
 	const char* Title;
-	const char* DiskFullBody;
-	const char* DiskFullTitle;
 	DWORD NumberOfBytesRead;
 	DWORD CurrentProcessId;
 	int Answer;
@@ -963,11 +1002,11 @@ int Sys_CheckCrashOrRerun()
 			CloseHandle(File);
 LABEL_18:
 			Sys_EnterCriticalSection(CRITSECT_FATAL_ERROR);
-			DiskFullTitle = Win_LocalizeRef("WIN_DISK_FULL_TITLE");
-			DiskFullBody = Win_LocalizeRef("WIN_DISK_FULL_BODY");
+			Title = Win_LocalizeRef("WIN_DISK_FULL_TITLE");
+			Body = Win_LocalizeRef("WIN_DISK_FULL_BODY");
 			ActiveWindow = GetActiveWindow();
-			MessageBoxA(ActiveWindow, DiskFullBody, DiskFullTitle, 0x10u);
-			memory::call<void()>(0x48A4E0)();
+			MessageBoxA(ActiveWindow, Body, Title, 0x10u);
+			memory::call<void()>(0x48A4E0)(); // Steam_EmergencyShutdown
 		}
 	}
 	CloseHandle(File);
