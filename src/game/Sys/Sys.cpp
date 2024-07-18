@@ -62,50 +62,50 @@ void Sys_CreateConsole(HINSTANCE hInstance)
 	sheight = GetDeviceCaps(hDC, 10);
 	ReleaseDC(GetDesktopWindow(), hDC);
 
-	*(int*)0x64A389C = Rect.right - Rect.left + 1;
-	*(int*)0x64A38A0 = Rect.bottom - Rect.top + 1;
+	*(int*)0x1A0474C = Rect.right - Rect.left + 1;
+	*(int*)0x1A04750 = Rect.bottom - Rect.top + 1;
 
-	*(HWND*)0x64A3288 = CreateWindowExA( // hWndParent
+	*(HWND*)0x1A04138 = CreateWindowExA( // hWndParent
 		0, "OpenIW4 WinConsole", "OpenIW4 Console", 0x80CA0000, (swidth - 600) / 2, (sheight - 450) / 2,
 		Rect.right - Rect.left + 1, Rect.bottom - Rect.top + 1, 0, 0, hInstance, 0);
 
-	if (!*(HWND*)0x64A3288)
+	if (!*(HWND*)0x1A04138)
 	{
 		return;
 	}
 
 	// create fonts
-	hDC = GetDC(*(HWND*)0x64A3288);
+	hDC = GetDC(*(HWND*)0x1A04138);
 	nHeight = MulDiv(8, GetDeviceCaps(hDC, 90), 72);
 
-	*(HFONT*)0x64A3294 = CreateFontA( // hfBufferFont
+	*(HFONT*)0x1A04144 = CreateFontA( // hfBufferFont
 		-nHeight, 0, 0, 0, 300, 0, 0, 0, 1u, 0, 0, 0, 0x31u, "Courier New");
 
-	ReleaseDC(*(HWND*)0x64A3288, hDC);
+	ReleaseDC(*(HWND*)0x1A04138, hDC);
 
 	auto logo = LoadImageA(0, "openiw4-logo.bmp", 0, 0, 0, 0x10u);
 	if (logo)
 	{
-		*(HWND*)0x64A3290 = CreateWindowExA(
-			0, "Static", 0, 0x5000000Eu, 5, 5, 0, 0, *(HWND*)0x64A3288, (HMENU)1, hInstance, 0);
-		SendMessageA(*(HWND*)0x64A3290, 0x172u, 0, (LPARAM)logo);
+		*(HWND*)0x1A04140 = CreateWindowExA(
+			0, "Static", 0, 0x5000000Eu, 5, 5, 0, 0, *(HWND*)0x1A04138, (HMENU)1, hInstance, 0);
+		SendMessageA(*(HWND*)0x1A04140, 0x172u, 0, (LPARAM)logo);
 	}
 
 	// create the input line
-	*(HWND*)0x64A3298 = CreateWindowExA( // hwndInputLine
-		0, "edit", 0, 0x50800080u, 6, 400, 608, 20, *(HWND*)0x64A3288, (HMENU)0x65, hInstance, 0);
-	*(HWND*)0x64A328C = CreateWindowExA( // hwndBuffer
-		0, "edit", 0, 0x50A00844u, 6, 70, 606, 324, *(HWND*)0x64A3288, (HMENU)0x64, hInstance, 0);
-	SendMessageA(*(HWND*)0x64A328C, 0x30, *(WPARAM*)0x64A3294, 0);
+	*(HWND*)0x1A04148 = CreateWindowExA( // hwndInputLine
+		0, "edit", 0, 0x50800080u, 6, 400, 608, 20, *(HWND*)0x1A04138, (HMENU)0x65, hInstance, 0);
+	*(HWND*)0x1A0413C = CreateWindowExA( // hwndBuffer
+		0, "edit", 0, 0x50A00844u, 6, 70, 606, 324, *(HWND*)0x1A04138, (HMENU)0x64, hInstance, 0);
+	SendMessageA(*(HWND*)0x1A0413C, 0x30, *(WPARAM*)0x1A04144, 0);
 
-	*(WNDPROC*)0x64A38A4 = (WNDPROC)SetWindowLongA( // SysInputLineWndProc
-		*(HWND*)0x64A3298, -4, (long)InputLineWndProc);
-	SendMessageA(*(HWND*)0x64A3298, 0x30, *(WPARAM*)0x64A3294, 0);
+	*(WNDPROC*)0x1A04754 = (WNDPROC)SetWindowLongA( // SysInputLineWndProc
+		*(HWND*)0x1A04148, -4, (long)InputLineWndProc);
+	SendMessageA(*(HWND*)0x1A04148, 0x30, *(WPARAM*)0x1A04144, 0);
 
-	SetFocus(*(HWND*)0x64A3298);
+	SetFocus(*(HWND*)0x1A04148);
 	Con_GetTextCopy(text, 0x4000);
 	Conbuf_CleanText(text, target, 0x4000);
-	SetWindowTextA(*(HWND*)0x64A328C, target);
+	SetWindowTextA(*(HWND*)0x1A0413C, target);
 }
 
 
@@ -115,15 +115,15 @@ long __stdcall ConsoleWndProc(HWND hWnd, std::uint32_t msg, std::uint32_t wParam
     switch (msg)
     {
         case WM_SIZE: // 5
-            SetWindowPos(*(HWND*)0x64A328C /*dword_64A328C*/, 0, 5, 70, lParam - 15, HIWORD(lParam) - 100, 0);
-            SetWindowPos(*(HWND*)0x64A3298 /*::hWnd*/, 0, 5, HIWORD(lParam) - 100 + 78, lParam - 15, 20, 0);
-            *(std::uint16_t*)0x64A389C /*dword_64A389C*/ = (std::uint16_t)lParam;
-            *(long*)0x64A38A0 /*dword_64A38A0*/ = HIWORD(lParam);
+            SetWindowPos(*(HWND*)0x1A0413C /*dword_64A328C*/, 0, 5, 70, lParam - 15, HIWORD(lParam) - 100, 0);
+            SetWindowPos(*(HWND*)0x1A04148 /*::hWnd*/, 0, 5, HIWORD(lParam) - 100 + 78, lParam - 15, 20, 0);
+            *(std::uint16_t*)0x1A0474C /*dword_64A389C*/ = (std::uint16_t)lParam;
+            *(long*)0x1A04750 /*dword_64A38A0*/ = HIWORD(lParam);
             return DefWindowProcA(hWnd, msg, wParam, lParam);
         case WM_ACTIVATE: // 6
             if (wParam)
             {
-                SetFocus(*(HWND*)0x64A3298 /*::hWnd*/);
+                SetFocus(*(HWND*)0x1A04148 /*::hWnd*/);
             }
             return DefWindowProcA(hWnd, msg, wParam, lParam);
         case WM_CLOSE: // 16
@@ -142,7 +142,7 @@ long __stdcall InputLineWndProc(HWND hWnd, std::uint32_t uMsg, std::uint32_t wPa
 
     if (uMsg == 8) // WM_KILLFOCUS
     {
-        if ((HWND)wParam == *(HWND*)0x64A3288)
+        if ((HWND)wParam == *(HWND*)0x1A04138)
         {
             SetFocus(hWnd);
             return 0;
@@ -150,17 +150,17 @@ long __stdcall InputLineWndProc(HWND hWnd, std::uint32_t uMsg, std::uint32_t wPa
     }
     else if (uMsg == 258 && wParam == 13) // WM_CHAR
     {
-        GetWindowTextA(*(HWND*)0x64A3298, inputBuffer, 1024);
-        strncat((char*)0x64A349C, inputBuffer, 507 - strlen((char*)0x64A349C));
-        strcat((char*)0x64A349C, "\n");
-        SetWindowTextA(*(HWND*)0x64A3298, "");
+        GetWindowTextA(*(HWND*)0x1A04148, inputBuffer, 1024);
+        strncat((char*)0x1A0434C, inputBuffer, 507 - strlen((char*)0x1A0434C));
+        strcat((char*)0x1A0434C, "\n");
+        SetWindowTextA(*(HWND*)0x1A04148, "");
 
         Com_sprintf(displayBuffer, 1024, "]%s\n", inputBuffer);
-        memory::call<void(char*)>(0x4914B0)(displayBuffer); // Sys_Print
+        memory::call<void(char*)>(0x44C010)(displayBuffer); // Sys_Print
         return 0;
     }
 
-    return CallWindowProcA(*(WNDPROC*)0x64A38A4, hWnd, uMsg, wParam, lParam);
+    return CallWindowProcA(*(WNDPROC*)0x1A04754, hWnd, uMsg, wParam, lParam);
 }
 
 /*static _RTL_CRITICAL_SECTION** s_criticalSection = reinterpret_cast<_RTL_CRITICAL_SECTION**>(0x6499BC8);
@@ -179,13 +179,13 @@ void Sys_InitializeCriticalSections()
 //THUNK : 0x42F0A0
 void Sys_InitializeCriticalSections()
 {
-    memory::call<void()>(0x42F0A0)();
+    memory::call<void()>(0x42E2D0)();
 }
 
 //THUNK : 0x4301B0
 void Sys_InitMainThread()
 {
-    memory::call<void()>(0x004301B0)();
+    memory::call<void()>(0x4939C0)();
 }
 
 //DONE : 0x4169C0
@@ -234,13 +234,13 @@ void Sys_CheckQuitRequest()
 //THUNK : 0x004C8E30
 void Sys_RecordAccessibilityShortcutSettings()
 {
-    memory::call<void()>(0x004C8E30)();
+    memory::call<void()>(0x4AAC60)();
 }
 
 //THUNK : 0x0040BC60
 void Sys_AllowAccessibilityShortcutKeys(bool a1)
 {
-    memory::call<void(bool)>(0x0040BC60)(a1);
+    memory::call<void(bool)>(0x466610)(a1);
 }
 
 //DONE : 0x00475F00
@@ -262,8 +262,8 @@ void Sys_CreateSplashWindow()
     WndClass.cbWndExtra = 0;
     WndClass.lpszMenuName = 0;
     WndClass.lpfnWndProc = DefWindowProcA;
-    WndClass.hInstance = *(HINSTANCE*)0x064A3AD4;
-    WndClass.hIcon = LoadIconA(*(HINSTANCE*)0x064A3AD4, (LPCSTR)1);
+    WndClass.hInstance = *(HINSTANCE*)0x1A04788;
+    WndClass.hIcon = LoadIconA(*(HINSTANCE*)0x1A04788, (LPCSTR)1);
     WndClass.hCursor = LoadCursorA(0, (LPCSTR)0x7F00);
     WndClass.hbrBackground = (HBRUSH)6;
     WndClass.lpszClassName = "CoD Splash Screen";
@@ -274,7 +274,7 @@ void Sys_CreateSplashWindow()
         ImageA = LoadImageA(0, "openiw4-splash.bmp", 0, 0, 0, 0x10u);
         if (ImageA)
         {
-            memory::call<char()>(0x0045F8B0)();
+            memory::call<char()>(0x40E380)();
             Window = CreateWindowExA(
                 0x40000u,
                 "CoD Splash Screen",
@@ -286,12 +286,12 @@ void Sys_CreateSplashWindow()
                 100,
                 0,
                 0,
-                *(HINSTANCE*)0x064A3AD4,
+                *(HINSTANCE*)0x1A04788,
                 0);
-            *(HWND*)0x064A3050 /*g_splash_wv*/ = Window;
+            *(HWND*)0x1A04114 /*g_splash_wv*/ = Window;
             if (Window)
             {
-                v4 = CreateWindowExA(0, "Static", 0, 0x5000000Eu, 0, 0, 320, 100, Window, 0, *(HINSTANCE*)0x064A3AD4, 0);
+                v4 = CreateWindowExA(0, "Static", 0, 0x5000000Eu, 0, 0, 320, 100, Window, 0, *(HINSTANCE*)0x1A04788, 0);
                 v5 = v4;
                 if (v4)
                 {
@@ -304,7 +304,7 @@ void Sys_CreateSplashWindow()
                     Rect.right = Rect.left + v6;
                     Rect.bottom = Rect.top + v7;
                     AdjustWindowRect(&Rect, 0x5000000Eu, 0);
-                    SetWindowPos(*(HWND*)0x064A3050 /*g_splash_wv*/, 0, Rect.left, Rect.top, Rect.right - Rect.left, Rect.bottom - Rect.top, 4u);
+                    SetWindowPos(*(HWND*)0x1A04114 /*g_splash_wv*/, 0, Rect.left, Rect.top, Rect.right - Rect.left, Rect.bottom - Rect.top, 4u);
                 }
             }
         }
@@ -314,34 +314,34 @@ void Sys_CreateSplashWindow()
 //DONE : 0x004A7B10
 void Sys_ShowSplashWindow()
 {
-    if (*(HWND*)0x064A3050 /*g_splash_wv*/)
+    if (*(HWND*)0x1A04114 /*g_splash_wv*/)
     {
-        ShowWindow(*(HWND*)0x064A3050 /*g_splash_wv*/, 5);
-        UpdateWindow(*(HWND*)0x064A3050 /*g_splash_wv*/);
+        ShowWindow(*(HWND*)0x1A04114 /*g_splash_wv*/, 5);
+        UpdateWindow(*(HWND*)0x1A04114 /*g_splash_wv*/);
     }
 }
 
 //THUNK : 0x0064D270
 void Sys_RegisterClass()
 {
-    memory::call<void()>(0x0064D270)();
+    memory::call<void()>(0x63B070)();
 }
 
 //DONE : 0x0042A660
 int Sys_Milliseconds()
 {
-    if (!*(int*)0x064A304C /*Sys_Milliseconds(void)::initialized*/)
+    if (!*(int*)0x1A04110 /*Sys_Milliseconds(void)::initialized*/)
     {
-        *(int*)0x064A3034 /*sys_timeBase*/ = timeGetTime();
-        *(int*)0x064A304C /*Sys_Milliseconds(void)::initialized*/ = 1;
+        *(int*)0x1A040F8 /*sys_timeBase*/ = timeGetTime();
+        *(int*)0x1A04110 /*Sys_Milliseconds(void)::initialized*/ = 1;
     }
-    return timeGetTime() - *(int*)0x064A3034 /*sys_timeBase*/;
+    return timeGetTime() - *(int*)0x1A040F8 /*sys_timeBase*/;
 }
 
 //THUNK : 0x4EC730
 int* Sys_GetValue(int a1)
 {
-    return memory::call<int*(int)>(0x004EC730)(a1);
+    return memory::call<int*(int)>(0x486D90)(a1);
 }
 
 //THUNK : 0x4B2F50
@@ -362,7 +362,7 @@ void Sys_getcwd()
 //DONE : 0x4C37D0
 bool Sys_IsMainThread()
 {
-    return GetCurrentThreadId() == *(unsigned long*)0x004C37D0;
+    return GetCurrentThreadId() == *(unsigned long*)0x155510C;
 }
 
 //THUNK : 0x4FC200
@@ -382,15 +382,16 @@ void Sys_LeaveCriticalSection(CriticalSection critSect)
 //TODO : 0x64CF10
 void Sys_EnumerateHw()
 {
-    sys_info->logicalCpuCount = Sys_GetCPUCount();
-    std::double_t msecPerRawTimerTick = *(std::double_t*)0x6499BA8;
-    sys_info->cpuGHz = 1.0 / (((std::double_t)1i64 - (std::double_t)0i64) * msecPerRawTimerTick * 1000000.0);
-    sys_info->sysMB = Sys_SystemMemoryMB();
-    Sys_DetectVideoCard(512, sys_info->gpuDescription);
-    sys_info->SSE = memory::call<bool()>(0x453350)(); //Sys_SupportsSSE
-    memory::call<void(const char*, const char*)>(0x4F0BB0)(sys_info->cpuVendor, sys_info->cpuName); //Sys_DetectCpuVenderAndName
-    memory::call<void(SysInfo*)>(0x4F0170)(sys_info); //Sys_SetAutoConfigureGHz
-    
+	memory::call<void()>(0x63AD20)();
+    // sys_info->logicalCpuCount = Sys_GetCPUCount();
+    // std::double_t msecPerRawTimerTick = *(std::double_t*)0x19FBA08;
+    // sys_info->cpuGHz = 1.0 / (((std::double_t)1i64 - (std::double_t)0i64) * msecPerRawTimerTick * 1000000.0);
+    // sys_info->sysMB = Sys_SystemMemoryMB();
+    // Sys_DetectVideoCard(512, sys_info->gpuDescription);
+    // sys_info->SSE = memory::call<bool()>(0x4F1ED0)(); //Sys_SupportsSSE
+    // memory::call<void(const char*, const char*)>(0x4E7880)(sys_info->cpuVendor, sys_info->cpuName); //Sys_DetectCpuVenderAndName
+    // memory::call<void(SysInfo*)>(0x4181A0)(sys_info); //Sys_SetAutoConfigureGHz
+    //
 }
 
 //DONE : 0x4C9540
@@ -508,7 +509,7 @@ void Sys_Error(const char* error, ...)
     va_start(args, error);
 
 	Com_EnterError();
-    memory::call<void()>(0x45A190)(); // possibly Sys_SuspendOtherThreads
+    memory::call<void()>(0x4990C0)(); // possibly Sys_SuspendOtherThreads
 
     _vsnprintf(buffer, 4096, error, args);
     va_end(args);
@@ -532,7 +533,7 @@ void Sys_Error(const char* error, ...)
         while (GetMessageA(&msg, 0, 0, 0));
     }
 
-    memory::call<void()>(0x48A4E0)(); // Steam_EmergencyShutdown? idk if thats the name but it's something related to steam though
+    memory::call<void()>(0x436BB0)(); // Steam_EmergencyShutdown? idk if thats the name but it's something related to steam though
     exit(0);
 }
 
@@ -540,10 +541,10 @@ void Sys_Error(const char* error, ...)
 void Sys_SetErrorText(const char* text)
 {
     // s_wcd.errorString seems to be leftover from Quake for setting an old error prompt
-    I_strncpyz((char*)0x64A329C, text, 512);
+    I_strncpyz((char*)0x1A0414C, text, 512);
 
-    DestroyWindow(*(HWND*)0x64A3298 /*s_wcd.hwndInputLine*/);
-    *(HWND*)0x64A3298 = 0;
+    DestroyWindow(*(HWND*)0x1A04148 /*s_wcd.hwndInputLine*/);
+    *(HWND*)0x1A04148 = 0;
 
     auto activeWindow = GetActiveWindow();
     MessageBoxA(activeWindow, text, "Error", 0x10u);
@@ -679,17 +680,17 @@ int __stdcall HideWindowCallback(HWND hWnd, long lParam)
 {
     std::int32_t style;
     std::int32_t styleEx;
-    std::int32_t* v4 = *(std::int32_t**)0x63D0B78; //anything using this is probably all wrong
+    std::int32_t* v4 = *(std::int32_t**)0x1956008; //anything using this is probably all wrong
     char caption[1024];
 
-    if (!GetWindowTextA(hWnd, caption, 1024) || !strcmp(caption, "Modern Warfare 2 Multiplayer")) // the build display name is a returned string from a function
+    if (!GetWindowTextA(hWnd, caption, 1024) || !strcmp(caption, "Modern Warfare 2")) // the build display name is a returned string from a function
     {
         style = GetWindowLongA(hWnd, -16);
         styleEx = GetWindowLongA(hWnd, -20);
 
         if (style & 0x10000000)
         {
-            *(HWND*)(0x63D0B80)[v4] = hWnd;
+            *(HWND*)(0x1956000)[v4] = hWnd;
             SetWindowLongA(hWnd, -16, style & 0xEFFFFFFF);
             SetWindowLongA(hWnd, -20, styleEx & 0xFFFFFFF7);
         }
@@ -906,51 +907,10 @@ int Sys_GetSemaphoreFileName()
 	return sprintf(sys_processSemaphoreFile, "__%s", moduleName);
 }
 
-//DONE : 0x64D100
+//TODO : 0x64D100
 int Sys_IsGameProcess(int id)
 {
-	int isGame;
-	HANDLE process;
-	HANDLE snapshot;
-	char* i;
-	char* moduleName;
-	char modulePath[260];
-	MODULEENTRY32 me;
-
-	isGame = 0;
-	process = OpenProcess(0x1F0FFFu, 0, id);
-
-	if (!process)
-		return 0;
-	CloseHandle(process);
-
-	snapshot = CreateToolhelp32Snapshot(8u, id);
-
-	if (snapshot == (void*)-1)
-		return 0;
-	me.dwSize = 548;
-	if (Module32First(snapshot, &me))
-	{
-		GetModuleFileNameA(0, modulePath, 0x104u);
-		modulePath[259] = 0;
-		moduleName = modulePath;
-		for (i = modulePath; *i; ++i)
-		{
-			if (*i == 92 || *i == 58)
-				moduleName = i + 1;
-		}
-		while (I_stricmp(me.szModule, moduleName))
-		{
-			if (!Module32Next(snapshot, &me))
-			{
-				CloseHandle(snapshot);
-				return 0;
-			}
-		}
-		isGame = 1;
-	}
-	CloseHandle(snapshot);
-	return isGame;
+	return NULL;
 }
 
 //DONE : 0x411350
@@ -960,9 +920,12 @@ int Sys_CheckCrashOrRerun()
 	HWND ActiveWindow;
 	const char* Body;
 	const char* Title;
+	const char* DiskFullBody;
+	const char* DiskFullTitle;
 	DWORD NumberOfBytesRead;
 	DWORD CurrentProcessId;
 	int Answer;
+	int Buffer;
 	unsigned int id;
 
 	if (!sys_processSemaphoreFile[0])
@@ -971,10 +934,10 @@ int Sys_CheckCrashOrRerun()
 	File = CreateFileA(sys_processSemaphoreFile, 0x80000000, 0, 0, 3u, 2u, 0);
 	if (File != (HANDLE)-1)
 	{
-		if (ReadFile(File, &id, 4u, &NumberOfBytesRead, 0) && NumberOfBytesRead == 4)
+		if (ReadFile(File, &Buffer, 4u, &NumberOfBytesRead, 0) && NumberOfBytesRead == 4)
 		{
 			CloseHandle(File);
-			if (CurrentProcessId != id && Sys_IsGameProcess(id))
+			if (CurrentProcessId != Buffer && Sys_IsGameProcess(id))
 				return 0;
 			Title = Win_LocalizeRef("WIN_IMPROPER_QUIT_TITLE");
 			Body = Win_LocalizeRef("WIN_IMPROPER_QUIT_BODY");
@@ -995,17 +958,17 @@ int Sys_CheckCrashOrRerun()
 		}
 		File = CreateFileA(sys_processSemaphoreFile, 0x40000000u, 0, 0, 2u, 2u, 0);
 		if (File == (void*)-1)
-		{
-			Sys_EnterCriticalSection(CRITSECT_FATAL_ERROR);
-			Title = Win_LocalizeRef("WIN_DISK_FULL_TITLE");
-			Body = Win_LocalizeRef("WIN_DISK_FULL_BODY");
-			ActiveWindow = GetActiveWindow();
-			MessageBoxA(ActiveWindow, Body, Title, 0x10u);
-			memory::call<void()>(0x48A4E0)(); // Steam_EmergencyShutdown
-		}
+			goto LABEL_18; // Should we be doing this?
 		if (!WriteFile(File, &CurrentProcessId, 4u, &NumberOfBytesRead, 0) || NumberOfBytesRead != 4)
 		{
 			CloseHandle(File);
+LABEL_18:
+			Sys_EnterCriticalSection(CRITSECT_FATAL_ERROR);
+			DiskFullTitle = Win_LocalizeRef("WIN_DISK_FULL_TITLE");
+			DiskFullBody = Win_LocalizeRef("WIN_DISK_FULL_BODY");
+			ActiveWindow = GetActiveWindow();
+			MessageBoxA(ActiveWindow, DiskFullBody, DiskFullTitle, 0x10u);
+			memory::call<void()>(0x436BB0)();
 		}
 	}
 	CloseHandle(File);

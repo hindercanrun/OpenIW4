@@ -10,9 +10,9 @@ static const char* toastPopupTitle = *reinterpret_cast<const char**>(0x6FAC0D); 
 static const dvar_t* sv_running = *reinterpret_cast<const dvar_t**>(0x1AD7934);
 static const dvar_t* sv_map = *reinterpret_cast<const dvar_t**>(0x2098DDC);
 static std::int32_t* com_errorPrintsCount = reinterpret_cast<std::int32_t*>(0x1AD7910);
-static std::int32_t com_fixedConsolePosition = *reinterpret_cast<std::int32_t*>(0x1AD8EC8);
+static std::int32_t com_fixedConsolePosition = *reinterpret_cast<std::int32_t*>(0x145EC10);
 static const char** punctuation = reinterpret_cast<const char**>(0x79D208);
-static int com_safemode = 0x1AD8F8C; //Is this a good way to do it?
+static int com_safemode = 0x145ECB8; //Is this a good way to do it?
 #pragma endregion Com Variables
 
 void Com_InitParse();

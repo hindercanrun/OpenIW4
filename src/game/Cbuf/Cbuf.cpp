@@ -7,7 +7,7 @@
 //THUNK : 0x00404B20
 void Cbuf_AddText(int a1, const char* a2)
 {
-	memory::call<void(int, const char*)>(0x00404B20)(a1, a2);
+	memory::call<void(int, const char*)>(0x4A1090)(a1, a2);
 }
 
 //DONE : 0x4AFB80

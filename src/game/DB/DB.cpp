@@ -10,16 +10,14 @@ void DB_Update()
     if (!Sys_IsDatabaseReady2())
     {
         if (Sys_IsDatabaseReady())
-        {
             DB_PostLoadXZone();
-        }
     }
 }
 
 //THUNK : 0x005BC6A0
 void DB_PostLoadXZone()
 {
-    memory::call<void()>(0x005BC6A0)();
+    memory::call<void()>(0x582E20)();
 }
 
 //May need more asset cases
@@ -96,16 +94,16 @@ int DB_GetXAssetTypeSize(XAssetType a1)
 //TODO : 0x4CF7F0
 void DB_DirtyDiscError()
 {
-    if (!I_strcmp(*(const char**)0x112A680 + 4, "mp_playlists"))
+    if (!I_strcmp(*(const char**)0x9DAD80 + 4, "mp_playlists"))
     {
         //Com_Error is still todo
         memory::call<void(std::int32_t, char* Format)>(0x4F8C70)(16, "Playlist fastfile is corrupt\n");
-        CloseHandle(*(HANDLE*)0x112A680);
+        CloseHandle(*(HANDLE*)0x9DAD80);
 
         const char* v0 = (const char*)memory::call<char* ()>(0x4F4EA0)();
         remove(v0);
     }
-    Com_Printf(8, "ERROR: Dirty disk: '%s'\n", *(const char**)0x112A680 + 4);
-    Sys_Error("Disk read error.\n\n%s", *(const char**)0x112A680 + 4); //we should make this more informative
+    Com_Printf(8, "ERROR: Dirty disk: '%s'\n", *(const char**)0x9DAD80 + 4);
+    Sys_Error("Disk read error.\n\n%s", *(const char**)0x9DAD80 + 4); //we should make this more informative
                                                                    //just prints out the same thing as Com_Printf call above for now
 }

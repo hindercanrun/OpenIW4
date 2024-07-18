@@ -112,12 +112,12 @@ void LSP_LogStringEvenIfControllerIsInactive(const char* string)
             if (!logMsgInittialized)
             {
                 logMsgInittialized = true;
-                MSG_Init((msg_t*)0x66C7160, *(char**)0x66C7188, 1200);
+                MSG_Init((msg_t*)0x1BEBC54, *(char**)0x66C7188, 1200);
 
                 if (CL_AllLocalClientsInactive() || (CL_GetFirstActiveControllerIndex(), !Live_IsSignedIn()))
                 {
                     LSP_WritePacketHeader(*(std::int32_t*)0x66C6C14,
-                        (msg_t*)0x66C7160,
+                        (msg_t*)0x1BEBC54,
                         v10,
                         v10, "Not signed in",
                         Live_GetCurrentSession());
@@ -128,7 +128,7 @@ void LSP_LogStringEvenIfControllerIsInactive(const char* string)
                     Live_GetLSPXuid(CL_GetFirstActiveControllerIndex(), &v10);
                     LSP_WritePacketHeader(
                         CL_GetFirstActiveControllerIndex(),
-                        (msg_t*)0x66C7160,
+                        (msg_t*)0x1BEBC54,
                         v10,
                         v10,
                         (char*)v7,
@@ -139,15 +139,15 @@ void LSP_LogStringEvenIfControllerIsInactive(const char* string)
             Sys_LeaveCriticalSection(CRITSECT_LSP);
         }
 
-        if (!*(std::int32_t*)0x66C7120/*s_firstLogWriteTime*/)
+        if (!*(std::int32_t*)0x1BEBC10/*s_firstLogWriteTime*/)
         {
-            *(std::int32_t*)0x66C7120 = Sys_Milliseconds();
+            *(std::int32_t*)0x1BEBC10 = Sys_Milliseconds();
         }
 
         Sys_EnterCriticalSection(CRITSECT_LSP);
-        MSG_WriteByte((msg_t*)0x66C7160, 2);
-        MSG_WriteLong((msg_t*)0x66C7160, Sys_Milliseconds());
-        MSG_WriteString((msg_t*)0x66C7160, i);
+        MSG_WriteByte((msg_t*)0x1BEBC54, 2);
+        MSG_WriteLong((msg_t*)0x1BEBC54, Sys_Milliseconds());
+        MSG_WriteString((msg_t*)0x1BEBC54, i);
         Sys_LeaveCriticalSection(CRITSECT_LSP);
     }
 }

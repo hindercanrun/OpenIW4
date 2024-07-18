@@ -3,7 +3,7 @@
 #include "../stdafx.hpp"
 #include "../defs.hpp"
 
-static localization_t* localization = reinterpret_cast<localization_t*>(0x649E740);
+static localization_t* localization = reinterpret_cast<localization_t*>(0x19FF820);
 
 bool Win_InitLocalization(language_t* language);
 void Win_ShutdownLocalization();

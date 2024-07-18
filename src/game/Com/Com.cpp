@@ -13,10 +13,11 @@
 //DONE : 0x004FF220
 void Com_InitParse()
 {
-	for (std::uint32_t i = 0; i < 4; ++i)
-	{
-		Com_InitParseInfo(g_parse[i].parseInfo);
-	}
+	memory::call<void()>(0x481060)();
+	// for (std::uint32_t i = 0; i < 4; ++i)
+	// {
+	//	Com_InitParseInfo(g_parse[i].parseInfo);
+	// }
 }
 
 //DONE : 0x004B7230
@@ -31,14 +32,14 @@ void Com_Frame()
     {
         DB_Update();
         Com_Frame_Try_Block_Function();
-        *(int*)(0x01AD8F80) = *(int*)(0x01AD8F80) + 1 /*com_frameNumber*/;
+        *(int*)(0x145ECAC) = *(int*)(0x145ECAC) + 1 /*com_frameNumber*/;
     }
 
-    if (*(int*)(0x01AD8F1C)/*com_errorEnteredCount*/)
+    if (*(int*)(0x145EC64)/*com_errorEnteredCount*/)
     {
         if (Sys_IsMainThread())
         {
-            *(int*)(0x001AD8F2C) = R_PopRemoteScreenUpdate();
+            *(int*)(0x145EC70) = R_PopRemoteScreenUpdate();
         }
 
         Sys_EnterCriticalSection(CRITSECT_COM_ERROR);
@@ -53,7 +54,7 @@ void Com_Frame()
 
         if (Sys_IsMainThread())
         {
-            R_PushRemoteScreenUpdate(*(int*)(0x001AD8F2C));
+            R_PushRemoteScreenUpdate(*(int*)(0x145EC70));
         }
 
         if (v1)
@@ -73,7 +74,7 @@ void Com_Init(char* src)
     Value = Sys_GetValue(2);
     if (_setjmp(Value))
     {
-        v2 = va("Error during initialization:\n%s\n", (char*)(0x01AD7EC0)/*com_errorMessage*/);
+        v2 = va("Error during initialization:\n%s\n", (char*)(0x145DC10)/*com_errorMessage*/);
         Sys_Error(v2);
     }
 	Com_Init_Try_Block_Function();
@@ -81,16 +82,16 @@ void Com_Init(char* src)
     Com_StartHunkUsers();
 }
 
-//THUNK : 0x0060BAE0
+// THUNK: 0x603FF0
 void Com_Init_Try_Block_Function()
 {
-    memory::call<void()>(0x0060BAE0)();
+    memory::call<void()>(0x603FF0)();
 }
 
-//THUNK : 0x0047DCA0
+// THUNK: 0x4D3FC0
 void Com_Frame_Try_Block_Function()
 {
-    memory::call<void()>(0x0047DCA0)();
+    memory::call<void()>(0x4D3FC0)();
 }
 
 //DONE : 0x4B9660
@@ -98,7 +99,7 @@ void Com_EnterError()
 {
 	if (Sys_IsMainThread())
 	{
-		*(std::int32_t*)0x1AD8F2C = R_PopRemoteScreenUpdate();
+		*(std::int32_t*)0x145EC70 = R_PopRemoteScreenUpdate();
 	}
 	Sys_EnterCriticalSection(CRITSECT_COM_ERROR);
 
@@ -111,19 +112,19 @@ void Com_EnterError()
 //THUNK : 0x0060BFD0
 int Com_ErrorCleanup()
 {
-    return memory::call<int()>(0x0060BFD0)();
+    return memory::call<int()>(0x6044D0)();
 }
 
-//THUNK : 0x0060BF40
+// THUNK: 0x604440
 int Com_StartHunkUsers()
 {
-    return memory::call<int()>(0x60BF40)();
+    return memory::call<int()>(0x604440)();
 }
 
 //THUNK : 0x0060C3D0
 void Com_AddStartupCommands()
 {
-    memory::call<void()>(0x60C3D0)();
+    memory::call<void()>(0x6047A0)();
 }
 
 //TODO : 0x402500
@@ -135,7 +136,7 @@ void Com_Printf(std::uint32_t channel, const char* Format, ...)
     va_start(ArgList, Format);
     vsnprintf(Buffer, sizeof(Buffer), Format, ArgList);
     Buffer[sizeof(Buffer) - 1] = '\0';
-    memory::call<void(std::uint32_t, char*, int /*error*/)>(0x4AA830)(channel, Buffer, 0);
+    memory::call<void(std::uint32_t, char*, int /*error*/)>(0x456B70)(channel, Buffer, 0);
 }
 
 //DONE : 0x00413DE0
@@ -192,12 +193,12 @@ void Com_PrintError(int channel, const char* fmt, ...)
     LSP_LogStringEvenIfControllerIsInactive(error);
     Com_PrintMessage_t(channel, error, 3);
 
-    int* cls_uiStarted = (int*)(0x0A7FFA0);
+    int* cls_uiStarted = (int*)(0x8978BC);
     if (*cls_uiStarted)
     {
         if (!com_fixedConsolePosition)
         {
-            memory::call<void()>(0x44A430); // CL_ConsoleFixPosition
+            memory::call<void()>(0x4BEA40); // CL_ConsoleFixPosition
         }
     }
 

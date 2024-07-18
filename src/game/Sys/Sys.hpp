@@ -8,22 +8,22 @@
 #pragma region Sys variables
 
 static volatile std::int32_t* sv_thread_owns_game = reinterpret_cast<volatile std::int32_t*>(0x2089DB8);
-static SysInfo* sys_info = reinterpret_cast<SysInfo*>(0x064A17A0);
+static SysInfo* sys_info = reinterpret_cast<SysInfo*>(0x1A02890);
 static std::uint32_t s_cpuCount = *reinterpret_cast<std::uint32_t*>(0x1CDE7F0);
 
 static HANDLE hEvent = *reinterpret_cast<HANDLE*>(0x1CDE7EC);
-static HANDLE noThreadOwnershipEvent = *reinterpret_cast<HANDLE*>(0x1CDE704);
-static void* backendEvent = *reinterpret_cast<void**>(0x1CDE730); //backendEvent[2] (was just a HANDLE in IDA)
+static HANDLE noThreadOwnershipEvent = *reinterpret_cast<HANDLE*>(0x1555030);
+static void* backendEvent = *reinterpret_cast<void**>(0x1555058); //backendEvent[2] (was just a HANDLE in IDA)
 static HANDLE dword_1CDE850 = *reinterpret_cast<HANDLE*>(0x1CDE850);
 
 static HANDLE* threadHandle = *reinterpret_cast<HANDLE**>(0x1CDE828); //9 elements
 static std::int32_t* threadId = *reinterpret_cast<std::int32_t**>(0x1CDE7FC); //9 elements
 
-static WinConData* s_wcd = reinterpret_cast<WinConData*>(0x064A3288);
-static HANDLE* databaseCompletedEvent = reinterpret_cast<HANDLE*>(0x1CDE7F8);
-static HANDLE* databaseCompletedEvent2 = reinterpret_cast<HANDLE*>(0x01CDE858);
+static WinConData* s_wcd = reinterpret_cast<WinConData*>(0x1A04138);
+static HANDLE* databaseCompletedEvent = reinterpret_cast<HANDLE*>(0x1555108);
+static HANDLE* databaseCompletedEvent2 = reinterpret_cast<HANDLE*>(0x1555158);
 
-static char* sys_processSemaphoreFile = *reinterpret_cast<char**>(0x649FF74);
+static char* sys_processSemaphoreFile = *reinterpret_cast<char**>(0x1A0104C);
 #pragma endregion
 void Sys_ShowConsole();
 void Sys_CreateConsole(HINSTANCE hInstance);
