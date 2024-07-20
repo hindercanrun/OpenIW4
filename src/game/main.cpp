@@ -108,7 +108,7 @@ void* ReallocateAssetPool(XAssetType type, std::size_t newSize)
 void testMe()
 {
     Com_Printf(16, "testMe was called\n");
-    Sys_Error("Oh god oh fuck");
+    // Sys_Error("Oh god oh fuck");
 }
 
 void patches()
@@ -199,8 +199,8 @@ void replace_funcs()
 {
     memory::replace(0x4A7910, main);
     memory::replace(0x42C830, Sys_ShowConsole);
-    memory::replace(0x40BFF0, Sys_Error);
-    // memory::replace(0x413600, DB_DirtyDiscError);
+    // memory::replace(0x40BFF0, Sys_Error);
+    // memory::replace(0x413600, DB_DirtyDiscError); // Causes a crash
 	// memory::replace(0x544730, Image_VerifyHeader);
 }
 

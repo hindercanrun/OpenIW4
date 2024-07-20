@@ -8,7 +8,7 @@
 
 #include <utils/memory/memory.hpp>
 
-//DONE : 0x004305E0
+//DONE : 0x0042C830
 void Sys_ShowConsole()
 {
 	HMODULE handle;
@@ -23,7 +23,7 @@ void Sys_ShowConsole()
 
 }
 
-//DONE : 0x004288A0
+//DONE : 0x00446900
 void Sys_CreateConsole(HINSTANCE hInstance)
 {
 	HDC hDC;
@@ -83,7 +83,7 @@ void Sys_CreateConsole(HINSTANCE hInstance)
 
 	ReleaseDC(*(HWND*)0x1A04138, hDC);
 
-	auto logo = LoadImageA(0, "openiw4-logo.bmp", 0, 0, 0, 0x10u);
+	auto logo = LoadImageA(0, "logo.bmp", 0, 0, 0, 0x10u);
 	if (logo)
 	{
 		*(HWND*)0x1A04140 = CreateWindowExA(
@@ -109,7 +109,7 @@ void Sys_CreateConsole(HINSTANCE hInstance)
 }
 
 
-//DONE : 0x0064DC50
+//DONE : 0x0063BA10
 long __stdcall ConsoleWndProc(HWND hWnd, std::uint32_t msg, std::uint32_t wParam, long lParam)
 {
     switch (msg)
@@ -134,7 +134,7 @@ long __stdcall ConsoleWndProc(HWND hWnd, std::uint32_t msg, std::uint32_t wParam
     }
 }
 
-//DONE : 0x00470190
+//DONE : 0x004AB970
 long __stdcall InputLineWndProc(HWND hWnd, std::uint32_t uMsg, std::uint32_t wParam, long lParam)
 {
     char displayBuffer[1024];
@@ -199,36 +199,6 @@ void Sys_Sleep(DWORD dwMilliseconds)
 bool IsServerRunning()
 {
     return memory::call<bool()>(0x64C620)();
-}
-
-//DONE : 0x0043EBB0
-void Sys_CheckQuitRequest()
-{
-    int FirstActiveLocalClient; // eax
-    auto onlinegame = (char*)(0x00B2BB48);
-    auto xblive_privatematch = (char*)(0x0649E714);
-    auto dword_649FF68 = (int*)(0x649FF68);
-
-    if (*(bool*)(0x0649FB61)/*g_quitRequested*/ && Sys_IsMainThread())
-    {
-        if ( onlinegame[16]
-            && !xblive_privatematch[16]
-            && IsServerRunning()
-            && Sys_Milliseconds() - *(int*)(0x0649FF94) < dword_649FF68[4])
-        {
-            if (!*(bool*)(0x0649FB60)/*g_quitMigrationStarted*/)
-            {
-                *(bool*)(0x0649FB60)/*g_quitMigrationStarted*/ = true;
-                FirstActiveLocalClient = CL_ControllerIndexFromClientNum();
-                Cbuf_AddText(FirstActiveLocalClient, "hostmigration_start\n");
-            }
-        }
-        else
-        {
-            *(int*)(0x00A7FE90)/*cls*/ = 1;
-            Cbuf_AddText(0, "quit\n");
-        }
-    }
 }
 
 //THUNK : 0x004C8E30
