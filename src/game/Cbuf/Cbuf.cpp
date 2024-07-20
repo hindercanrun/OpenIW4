@@ -4,13 +4,13 @@
 
 #include <utils/memory/memory.hpp>
 
-//THUNK : 0x4A1090
+//THUNK : 0x004A1090
 void Cbuf_AddText(int a1, const char* a2)
 {
 	memory::call<void(int, const char*)>(0x4A1090)(a1, a2);
 }
 
-//DONE : 0x4AFB80
+//DONE : 0x004958F0
 void Con_GetTextCopy(char* text, int maxSize)
 {
     
@@ -54,7 +54,7 @@ void Con_GetTextCopy(char* text, int maxSize)
     }
 }
 
-//DONE : 0x64DD30
+//DONE : 0x0063BAF0
 int Conbuf_CleanText(const char* source, char* target, int sizeofTarget)
 {
 	char* start;

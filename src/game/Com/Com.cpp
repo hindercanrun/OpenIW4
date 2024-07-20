@@ -10,7 +10,7 @@
 
 // None of these do anything to my knowledge
 // but for sake of completion they are here
-//DONE : 0x004FF220
+//DONE : 0x00481060
 void Com_InitParse()
 {
 	memory::call<void()>(0x481060)();
@@ -20,7 +20,7 @@ void Com_InitParse()
 	// }
 }
 
-//DONE : 0x004B7230
+//DONE : 0x0049C390
 void Com_Frame()
 {
     int* Value; // eax
@@ -65,7 +65,7 @@ void Com_Frame()
     }
 }
 
-//DONE : 0x004D9640
+//DONE : 0x00492F70
 void Com_Init(char* src)
 {
     int* Value; // eax
@@ -82,13 +82,13 @@ void Com_Init(char* src)
     Com_StartHunkUsers();
 }
 
-// THUNK: 0x603FF0
+// THUNK: 0x00603FF0
 void Com_Init_Try_Block_Function()
 {
     memory::call<void()>(0x603FF0)();
 }
 
-// THUNK: 0x4D3FC0
+// THUNK: 0x004D3FC0
 void Com_Frame_Try_Block_Function()
 {
     memory::call<void()>(0x4D3FC0)();
@@ -109,19 +109,19 @@ void Com_EnterError()
 	}
 }
 
-//THUNK : 0x0060BFD0
+//THUNK : 0x006044D0
 int Com_ErrorCleanup()
 {
     return memory::call<int()>(0x6044D0)();
 }
 
-// THUNK: 0x604440
+// THUNK: 0x00604440
 int Com_StartHunkUsers()
 {
     return memory::call<int()>(0x604440)();
 }
 
-//THUNK : 0x0060C3D0
+//THUNK : 0x006047A0
 void Com_AddStartupCommands()
 {
     memory::call<void()>(0x6047A0)();
@@ -953,7 +953,7 @@ char* Com_Parse(const char** data_p)
     return (char*)Com_ParseExt(data_p, 1);
 }
 
-//DONE : 0x48C550
+//DONE : 0x00495E50
 void Com_TouchMemory()
 {
     std::int32_t start = Sys_Milliseconds();
@@ -973,10 +973,10 @@ void Com_TouchMemory()
     Com_Printf(16, "Com_TouchMemory: %i msec. Using sum: %d\n", end - start, sum);
 }
 
-//DONE : 0x4303E0
+//DONE : 0x0046F200
 bool Com_IsRunningMenuLevel()
 {
-    return sv_running->current.enabled && I_strnicmp(sv_map->current.string, "menu_", 5) == 0;
+	return sv_running->current.enabled && I_strnicmp(sv_map->current.string, "menu_", 5) == 0;
 }
 
 //Done : 0x47F2D0

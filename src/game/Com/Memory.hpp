@@ -17,10 +17,10 @@ private:
 	int size;
 };
 
-static hunkUsed_t* hunk_low = reinterpret_cast<hunkUsed_t*>(0x63D97AC);
-static hunkUsed_t* hunk_high = reinterpret_cast<hunkUsed_t*>(0x63D97A4);
-static unsigned char** s_hunkData = reinterpret_cast<unsigned char**>(0x63E2638);
-static std::int32_t* s_hunkTotal = *reinterpret_cast<std::int32_t**>(0x63D978C);
+static hunkUsed_t* hunk_low = reinterpret_cast<hunkUsed_t*>(0x195AB10);
+static hunkUsed_t* hunk_high = reinterpret_cast<hunkUsed_t*>(0x195AB08);
+static unsigned char** s_hunkData = reinterpret_cast<unsigned char**>(0x19639A0);
+static std::int32_t* s_hunkTotal = *reinterpret_cast<std::int32_t**>(0x195AAF4);
 static HunkUser** g_debugUser = reinterpret_cast<HunkUser**>(0x201A45C);
 
 void LargeLocalInit();

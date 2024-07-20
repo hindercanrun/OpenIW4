@@ -2,7 +2,7 @@
 #include "../Com/Com.hpp"
 
 
-//DONE : 0x4A5510
+//DONE : 0x00440D70
 cmd_function_s* Cmd_FindCommand(const char* cmdName)
 {
     cmd_function_s* cmd;
@@ -18,7 +18,7 @@ cmd_function_s* Cmd_FindCommand(const char* cmdName)
     return 0;
 }
 
-//DONE : 0x470090
+//DONE : 0x004478A0
 void Cmd_AddCommandInternal(const char* cmdName, void(__cdecl* function)(), cmd_function_s* allocedCmd, bool isKey)
 {
 
@@ -39,7 +39,7 @@ void Cmd_AddCommandInternal(const char* cmdName, void(__cdecl* function)(), cmd_
     }
 }
 
-//DONE : 0x4379F0
+//DONE : 0x004D9C00
 void Cmd_RemoveCommand(const char* cmdName)
 {
     auto p_next = &cmd_functions;
@@ -62,7 +62,7 @@ void Cmd_RemoveCommand(const char* cmdName)
     }
 }
 
-//DONE : 0x40EDC0
+//DONE : 0x0048A880
 void Cmd_SetAutoComplete(const char* cmdName, const char* dir, const char* ext)
 {
     cmd_function_s* cmd = Cmd_FindCommand(cmdName);
