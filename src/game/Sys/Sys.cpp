@@ -877,13 +877,54 @@ int Sys_GetSemaphoreFileName()
 	return sprintf(sys_processSemaphoreFile, "__%s", moduleName);
 }
 
-//TODO : 0x64D100
+//TODO : 0x0063AF00
 int Sys_IsGameProcess(int id)
 {
-	return NULL;
+	int isGame;
+	HANDLE process;
+	HANDLE snapshot;
+	char* i;
+	char* moduleName;
+	char modulePath[260];
+	MODULEENTRY32 me;
+
+	isGame = 0;
+	process = OpenProcess(0x1F0FFFu, 0, id);
+
+	if (!process)
+		return 0;
+	CloseHandle(process);
+
+	snapshot = CreateToolhelp32Snapshot(8u, id);
+
+	if (snapshot == (void*)-1)
+		return 0;
+	me.dwSize = 548;
+	if (Module32First(snapshot, &me))
+	{
+		GetModuleFileNameA(0, modulePath, 0x104u);
+		modulePath[259] = 0;
+		moduleName = modulePath;
+		for (i = modulePath; *i; ++i)
+		{
+			if (*i == 92 || *i == 58)
+				moduleName = i + 1;
+		}
+		while (I_stricmp(me.szModule, moduleName))
+		{
+			if (!Module32Next(snapshot, &me))
+			{
+				CloseHandle(snapshot);
+				return 0;
+			}
+		}
+		isGame = 1;
+	}
+	CloseHandle(snapshot);
+	return isGame;
 }
 
-//DONE : 0x411350
+//DONE : 0x004F5B30
 int Sys_CheckCrashOrRerun()
 {
 	HANDLE File;

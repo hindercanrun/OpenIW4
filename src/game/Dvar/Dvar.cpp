@@ -6,7 +6,7 @@
 
 #include <utils/memory/memory.hpp>
 
-//THUNK : 0x004D8220
+//THUNK : 0x004714C0
 void Dvar_Init()
 {
 	memory::call<void()>(0x4714C0)();

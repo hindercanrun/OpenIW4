@@ -419,7 +419,7 @@ void Hunk_UserReset(HunkUser* user)
 	memset(user->buf, 0, 4064);
 }
 
-//DONE : 0x430E90
+//DONE : 0x004F1A10
 HunkUser* Hunk_UserCreate(int maxSize, const char* name, bool fixed, int type)
 {
     HunkUser* buffer = static_cast<HunkUser*>(Z_VirtualReserve(maxSize));
