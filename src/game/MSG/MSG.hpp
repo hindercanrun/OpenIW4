@@ -5,7 +5,7 @@
 
 #pragma region MSG Variables
 //unknown, seems to be referenced a lot
-static msg_t unk_66C7160 = *reinterpret_cast<msg_t*>(0x66C7160);
+static msg_t unk_66C7160 = *reinterpret_cast<msg_t*>(0x1BEBC54);
 static huffman_t* huff = reinterpret_cast<huffman_t*>(0x1CB9EC0);
 static std::int32_t* msg = reinterpret_cast<std::int32_t*>(0x1CB9EB8);
 

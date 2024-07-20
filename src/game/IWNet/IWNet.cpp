@@ -2,7 +2,7 @@
 
 #include <utils/memory/memory.hpp>
 
-//DONE : 0x00405BE0
+//DONE : 0x0043BC70
 bool IWNet_DNSResolved()
 {
     return dnsLookupSucceeded;

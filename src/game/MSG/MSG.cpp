@@ -16,14 +16,9 @@ void MSG_InitHuffman()
     Com_Printf(25, "Huffman took %d milliseconds\n", time2 - time);
 }
 
-//DONE : 0x45FCA0
+//DONE : 0x00444440
 void MSG_Init(msg_t* buffer, char* data, std::size_t size)
 {
-	if (!msgInit)
-	{
-		MSG_InitHuffman();
-	}
-
 	buffer->overflowed = false;
 	buffer->curSize = 0;
 	buffer->readCount = 0;
@@ -36,7 +31,7 @@ void MSG_Init(msg_t* buffer, char* data, std::size_t size)
 	buffer->splitSize = 0;
 }
 
-//DONE : 0x48C520
+//DONE : 0x0047E280
 void MSG_WriteByte(msg_t* msg, std::int8_t c)
 {
 	if (msg->curSize >= msg->maxSize)
@@ -118,7 +113,7 @@ void MSG_WriteShort(msg_t* msg, std::int32_t c)
 	}
 }
 
-//DONE : 0x41CA20
+//DONE : 0x00498D10
 void MSG_WriteLong(msg_t* msg, std::int32_t c)
 {
 	if (msg->curSize + 4 > msg->maxSize)
@@ -189,7 +184,7 @@ std::int32_t MSG_ReadByte(msg_t* msg)
     }
 }
 
-//DONE : 0x47A530
+//DONE : 0x004B0B70
 char* MSG_ReadString(msg_t* msg, char* string, std::uint32_t maxChars)
 {
     for (std::uint32_t i = 0; ; ++i)
