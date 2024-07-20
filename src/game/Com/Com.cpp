@@ -94,7 +94,7 @@ void Com_Frame_Try_Block_Function()
     memory::call<void()>(0x4D3FC0)();
 }
 
-//DONE : 0x4B9660
+//DONE : 0x431130
 void Com_EnterError()
 {
 	if (Sys_IsMainThread())
@@ -510,7 +510,7 @@ void Com_InitParseInfo(parseInfo_t* pi)
     pi->warningPrefix = *(const char**)0x6FAC0D;
 }
 
-//DONE : 0x4AAB80
+//DONE : 0x0x4A5C90
 void Com_BeginParseSession(const char* filename)
 {
     parseInfo_t* pi;
@@ -534,7 +534,7 @@ void Com_BeginParseSession(const char* filename)
             while (v2 < parse->parseInfoNum);
         }
         //com_error
-        memory::call<void(std::int32_t, char* Format, const char*)>(0x4B22D0)(0, (char*)0x730450, filename);
+        memory::call<void(std::int32_t, char* Format, const char*)>(0x43DD90)(0, (char*)0x6A6FB8, filename);
     }
 
     pi = &parse->parseInfo[++parse->parseInfoNum];
@@ -677,7 +677,7 @@ const char* SkipWhitespace(const char* data, std::int32_t* newLines)
     return 0;
 }
 
-//DONE : 0x64A2D0
+//DONE : 0x00638580
 parseInfo_t* Com_ParseExt(const char** data_p, std::int32_t allowLineBreaks)
 {
     //T5 code, used for readability, *should* act the same as IW4
@@ -935,7 +935,7 @@ parseInfo_t* Com_ParseExt(const char** data_p, std::int32_t allowLineBreaks)
     
 }
 
-//DONE : 0x474D60
+//DONE : 0x00486600
 char* Com_Parse(const char** data_p)
 {
     ParseThreadInfo* parse = Com_GetParseThreadInfo();

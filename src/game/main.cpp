@@ -20,12 +20,12 @@
 
 #define NOUPNP
 
-//TODO : 0x0064AE50
+//TODO : 0x639060
 double SecondsPerTick()
 {
 	//return memory::call<double()>(0x0064AE50)();
 
-    memory::call<void(std::int32_t)>(0x4A5E00)(2);
+    memory::call<void(std::int32_t)>(0x4E16F0)(2);
 
     std::uint64_t time, time2;
     long long v8;
@@ -61,19 +61,19 @@ double SecondsPerTick()
         (((std::double_t)(std::int64_t)time2 - time) * (std::double_t)frequency.QuadPart);
     SetThreadPriority(currentThread, nPriority);
 
-    memory::call<void(std::int32_t)>(0x4A5E00)(0);
+    memory::call<void(std::int32_t)>(0x4E16F0)(0);
 
     return *(std::double_t*)&v8;
 }
 
-//TODO : 0x47ADF0
+//TODO : 0x48D750
 void InitTiming()
 {
 	//*(std::double_t*)(0x47ADF0) /*msecPerRawTimerTick*/ = SecondsPerTick() * 1000.0;
     memory::call<void()>(0x48D750)();
 }
 
-//DONE : 0x437EB0
+//DONE : 0x45C350
 void Field_Clear(field_t* edit)
 {
     memset(edit->buffer, 0, sizeof(edit->buffer));
@@ -84,7 +84,7 @@ void Field_Clear(field_t* edit)
 }
 
 //This function is blank in 159
-//DONE : 0x4BB9B0
+//DONE : 0x46D370
 void Session_InitDvars()
 {
     
@@ -125,7 +125,7 @@ void patches()
 	memory::set<std::uint8_t>(0x544746, 0xEB);
 }
 
-//DONE : 0x004513D0
+//DONE : 0x4A7910
 std::int32_t main(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	patches();
@@ -199,7 +199,7 @@ void replace_funcs()
 {
     memory::replace(0x4A7910, main);
     memory::replace(0x42C830, Sys_ShowConsole);
-    // memory::replace(0x40BFF0, Sys_Error);
+    memory::replace(0x40BFF0, Sys_Error);
     // memory::replace(0x413600, DB_DirtyDiscError);
 	// memory::replace(0x544730, Image_VerifyHeader);
 }

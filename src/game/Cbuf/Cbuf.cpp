@@ -4,7 +4,7 @@
 
 #include <utils/memory/memory.hpp>
 
-//THUNK : 0x00404B20
+//THUNK : 0x4A1090
 void Cbuf_AddText(int a1, const char* a2)
 {
 	memory::call<void(int, const char*)>(0x4A1090)(a1, a2);
@@ -108,16 +108,16 @@ void Conbuf_AppendText(const char* pMsg)
 	}
 
 	v2 = Conbuf_CleanText(v1, target, sizeof(target));
-	*(std::uint32_t*)0x64A38B8 /*s_totalChars*/ += v2;
+	*(std::uint32_t*)0x1A04768 /*s_totalChars*/ += v2;
 	
-	if (*(std::uint32_t*)0x64A38B8 <= 0x4000)
+	if (*(std::uint32_t*)0x1A04768 <= 0x4000)
 	{
 		SendMessageA(s_wcd->hwndBuffer, 0xB1, 0xFFFF, 0xFFFF);
 	}
 	else
 	{
 		SendMessageA(s_wcd->hwndBuffer, 0xB1, 0, -1);
-		*(std::uint32_t*)0x64A38B8 = v2;
+		*(std::uint32_t*)0x1A04768 = v2;
 	}
 
 	SendMessageA(s_wcd->hwndBuffer, 0xB6, 0, 0xFFFF);
